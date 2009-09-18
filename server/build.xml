@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Author: Stefan Saasen (stefan@coravy.com)
+-->
+<project name="Simple BlazeDS example app" basedir=".">
+
+	<property file="build.properties" />
+
+	<property name="name"                     value="messaging" />
+	<property name="src.dir"                  value="src/main/java" />
+	<property name="src.test.dir"             value="src/main/test" />
+	<property name="dist.dir"                 value="target" />
+	<property name="web.dir"                  value="web" />
+	<property name="docs.dir"                 value="docs" />
+	<property name="webinf.dir"               value="${web.dir}/WEB-INF" />
+	<property name="classes.dir"              value="${webinf.dir}/classes" />
+	<property name="lib.dist.dir"             value="${webinf.dir}/lib" />
+	<property name="build.debug"              value="true" />
+	<property name="build.deprecation"        value="on" />
+	<property name="build.optimize"           value="off" />
+	<property name="java.source"              value="1.6" />
+	<property name="java.target"              value="1.6" />
+
+	<path id="context.classpath">
+		<fileset dir="${tomcat.lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="project.classpath">
+		<pathelement location="${classes.dir}" />
+		<path refid="context.classpath" />
+		<fileset dir="${lib.dist.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<patternset id="non-java-sourcefiles">
+		<include name="**/*.properties" />
+		<include name="**/*.xml" />
+		<include name="**/*.pdf" />
+		<include name="**/*.png" />
+		<include name="**/*.xsd" />
+		<include name="**/*.xsl" />
+		<include name="**/*.txt" />
+		<include name="**/*.ttf" />
+	</patternset>
+
+	
+	<!-- =======================================================================
+	         Macro to create war file
+	    ======================================================================== -->
+	<macrodef name="mac-war">
+		<attribute name="war.file" />
+		<attribute name="web.dir" />
+		<attribute name="lib.dir" />
+		<sequential>
+			<delete file="@{war.file}" />
+			<war destfile="@{war.file}" webxml="@{web.dir}/WEB-INF/web.xml">
+				<fileset dir="@{web.dir}">
+					<include name="**/*.*"/>
+					<exclude name="WEB-INF/web.xml"/>
+					<exclude name="**/*.jar"/>
+					<!--  Jars are defined in the <lib/> Element -->
+				</fileset>
+				<lib dir="@{lib.dir}">
+					<include name="*.*"/>
+				</lib>
+			</war>
+		</sequential>
+	</macrodef>
+
+	<target name="clean">
+		<delete dir="${classes.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${docs.dir}" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${docs.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare" description="Compile Java code." >
+		<javac debug="${build.debug}" srcdir="${src.dir}" destdir="${classes.dir}"
+            deprecation="${build.deprecation}" optimize="${build.optimize}"
+            encoding="UTF-8"
+            source="${java.source}" target="${java.target}">
+			<classpath refid="project.classpath" />
+			<compilerarg value="-Xlint"/>
+		</javac>
+		<!-- copy all non java class files as well -->
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<patternset refid="non-java-sourcefiles" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="war" depends="compile">
+		<mac-war lib.dir="${lib.dist.dir}" war.file="${dist.dir}/${name}.war" web.dir="${web.dir}" />
+	</target>
+
+</project>

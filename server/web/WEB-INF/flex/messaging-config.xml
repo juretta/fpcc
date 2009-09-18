@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="message-service" class="flex.messaging.services.MessageService">
+
+	<adapters>
+		<adapter-definition id="actionscript"
+			class="flex.messaging.services.messaging.adapters.ActionScriptAdapter"
+			default="true" />
+		<adapter-definition id="jms"
+			class="flex.messaging.services.messaging.adapters.JMSAdapter" />
+	</adapters>
+
+	<default-channels>
+		<channel ref="my-amf" />
+		<channel ref="my-polling-amf" />
+		<channel ref="my-amf-stream" />
+	</default-channels>
+
+	<destination id="systemMessages">
+		<adapter ref="jms" />
+		<channels>
+			<channel ref="my-amf-stream" />
+			<channel ref="my-polling-amf" />
+		</channels>
+		<properties>
+			<jms>
+				<connection-factory>java:comp/env/jms/flex/TopicConnectionFactory</connection-factory>
+				<destination-type>Topic</destination-type>
+				<destination-jndi-name>java:comp/env/jms/flex/topic/systemMessagesTopic</destination-jndi-name>
+				<message-type>javax.jms.TextMessage</message-type>
+				<!--
+					<delivery-mode>NON_PERSISTENT</delivery-mode>
+					<message-priority>DEFAULT_PRIORITY</message-priority>
+					<preserve-jms-headers>"true"</preserve-jms-headers>
+					<acknowledge-mode>AUTO_ACKNOWLEDGE</acknowledge-mode>
+				-->
+			</jms>
+		</properties>
+	</destination>
+	
+    <destination id="weatherWarnings">
+        <adapter ref="actionscript" />
+        <channels>
+            <channel ref="my-amf-stream" />
+            <channel ref="my-polling-amf" />
+        </channels>
+    </destination>
+	
+</service>
