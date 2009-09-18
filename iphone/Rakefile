@@ -1,0 +1,8 @@
+require 'rubygems'
+gem 'juretta-ipt'
+load 'iphone_tools.rake'
+
+task :analyze do #=> "ipt:analyze" 
+  sh "xcodebuild clean"
+  sh "scan-build -k -V --use-cc=/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 xcodebuild -activeconfiguration -activetarget -sdk iphonesimulator3.0"
+end

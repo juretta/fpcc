@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<commits created="2009-09-18T13:24:06+12:00">
+<commit id="06e67d38efb133a3a53e132e18e9d1aa0816255d">
+<date>Sun, 13 Sep 2009 19:53:34 +1200</date>
+<author><![CDATA[Stefan Saasen]]></author><author-email><![CDATA[stefan@coravy.com]]></author-email>
+<subject><![CDATA[Added reconnect feature.]]></subject><msg>
+<![CDATA[
+
+]]>
+</msg>
+</commit>
+<commit id="66e2dc65ce9757127741bcf76c8ba31d6759a5d3">
+<date>Thu, 10 Sep 2009 18:24:45 +1200</date>
+<author><![CDATA[Stefan Saasen]]></author><author-email><![CDATA[stefan@coravy.com]]></author-email>
+<subject><![CDATA[Minor UI improvements]]></subject><msg>
+<![CDATA[
+
+]]>
+</msg>
+</commit>
+<commit id="d0b3a0c2b72cba71083ba6132a843ee8e0468b13">
+<date>Thu, 10 Sep 2009 17:07:43 +1200</date>
+<author><![CDATA[Stefan Saasen]]></author><author-email><![CDATA[stefan@coravy.com]]></author-email>
+<subject><![CDATA[Added simple interface that connects to a BlazeDS MQ via Stomp]]></subject><msg>
+<![CDATA[
+
+]]>
+</msg>
+</commit>
+<commit id="054312b26ba853d24a5050113baf6641260bfb71">
+<date>Thu, 10 Sep 2009 16:21:39 +1200</date>
+<author><![CDATA[Stefan Saasen]]></author><author-email><![CDATA[stefan@coravy.com]]></author-email>
+<subject><![CDATA[Added StompServic & AsyncSocket. Added CFNetwork framework]]></subject><msg>
+<![CDATA[
+
+]]>
+</msg>
+</commit>
+<commit id="1850f99c07ad2aa63213621046cb38980a869b6d">
+<date>Thu, 10 Sep 2009 16:17:41 +1200</date>
+<author><![CDATA[Stefan Saasen]]></author><author-email><![CDATA[stefan@coravy.com]]></author-email>
+<subject><![CDATA[Initial import]]></subject><msg>
+<![CDATA[
+
+]]>
+</msg>
+</commit>
+</commits>
