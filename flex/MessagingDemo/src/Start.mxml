@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="horizontal"
+	xmlns:views="com.coravy.views.*" 
+	xmlns:maps="com.coravy.maps.*" 
+	xmlns:mate="http://mate.asfusion.com/"
+	width="100%">
+	
+	<!-- Styles ______________________________________________________ -->
+	
+	<mx:Style source="/assets/styles/main.css" />
+	
+	<!-- Event Maps __________________________________________________ -->
+	
+	<!--
+	<mate:Debugger level="{Debugger.ALL}" />
+	-->
+	
+	<maps:MainEventMap />
+	
+	
+	<!-- Views _______________________________________________________ -->
+	
+	<views:MainUI />
+
+</mx:Application>

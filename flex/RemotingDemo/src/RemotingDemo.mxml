@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="initMyChannels()" 
+	layout="absolute" 
+	width="100%" 
+	height="100%" 
+	backgroundGradientAlphas="[1.0, 1.0]" 
+	backgroundGradientColors="[#FFFFFF, #FFFFFF]">
+
+<mx:Script>
+<![CDATA[
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.AsyncToken;
+	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
+	import mx.rpc.events.FaultEvent;
+	import mx.messaging.events.*;
+    import mx.messaging.*;
+    import mx.messaging.channels.*;
+
+    import com.coravy.remoting.dto.Category;
+    import com.coravy.remoting.dto.Product;
+
+    [Bindable]
+    private var product:Product;
+    
+    [Bindable]
+    private var productList:ArrayCollection;
+    
+    [Bindable]
+    private var category:Category;
+    
+    private function initMyChannels():void {
+        trace("initChannels.");
+        // Instead of explicitly linking the services-config.xml this example creates the ChannelSet manually.
+        // To let the flex compiler create the channel sets based on the services-config.xml add the following compiler argument:
+        // -services "/PATH/TO/BlazeDSRemotingMessagingDemo/web/WEB-INF/flex/services-config.xml"  
+        var channelSet:ChannelSet = new ChannelSet(); 
+		var channel:AMFChannel = new AMFChannel("my-amf", "http://macbookpro:8080/messaging/messagebroker/amf");
+		channelSet.addChannel(channel);
+		ro.channelSet = channelSet;
+		
+		// load all categories
+		ro.getAllCategories();
+    }
+    
+    
+    private function faultHandler(event:FaultEvent):void {
+        Alert.show("Fault: " + event.message, 'Alert Box', mx.controls.Alert.OK);
+    }
+
+	private function resultHandler(event:ResultEvent):void {
+		this.productList = event.result as ArrayCollection;
+	} 
+
+    private function update():void {
+        product.name = productName.text;
+        product.vendor = vendor.text;
+        product.weight = Number(weight.text);
+        product.volume = Number(volume.text);
+        product.stockAmount = parseInt(stockAmount.text);
+        product.category = category.id;
+        ro.saveProduct(product);
+    }
+    
+    private function treeChange():void {
+    	this.category = Category(categoryTree.selectedItem);
+    	var token:AsyncToken =  ro.getProductsByCategory(this.category);
+    	token.addResponder(new mx.rpc.Responder(resultHandler, faultHandler));
+    }
+]]>
+</mx:Script>
+
+<!-- 
+	Define the remote object (the remote service to use) using the productService destination.
+	See web/WEB-INF/flex/remoting-config.xml
+-->
+<mx:RemoteObject id="ro" 
+    destination="productService"
+    showBusyCursor="true"
+    fault="faultHandler(event)" />
+	
+
+<mx:Image x="422" y="127" source="assets/images/flashcamp_logo.png" autoLoad="true" scaleContent="false"/>
+<mx:Image x="343" y="403" source="assets/images/remote_methods.png" autoLoad="true" scaleContent="false"/>
+
+<mx:Tree id="categoryTree" dataProvider="{ro.getAllCategories.lastResult}" 
+	width="415" 
+	height="162" 
+	change="treeChange();" 
+	x="25" 
+	y="25" 
+	backgroundColor="#FFFFFF" 
+	borderThickness="1" 
+	alpha="1.0" 
+	cornerRadius="0"></mx:Tree>
+
+<mx:DataGrid id="dg" 
+    dataProvider="{productList}"
+    width="1158" height="200"
+    change="product = Product(dg.selectedItem)" x="25" y="195" alternatingItemColors="[#F7F7F7, #FFFFFF]"/>
+
+<mx:Label x="601" text="{category.label}"  y="69" width="582" textAlign="right" fontWeight="bold" fontStyle="italic"/>
+<mx:Label x="601" text="{product.name}"  y="28" width="582" textAlign="right" fontSize="17"/>
+
+<mx:Label x="448" y="169" text="v 1.1"/>
+
+<mx:Form x="25" y="403">
+	<mx:FormItem label="Name">
+		<mx:TextInput id="productName" text="{product.name}"/>
+	</mx:FormItem>
+
+	<mx:FormItem label="Vendor">
+		<mx:TextInput id="vendor" text="{product.vendor}"/>
+	</mx:FormItem>
+	
+	<mx:FormItem label="Weight">
+		<mx:TextInput id="weight" text="{product.weight}"/>
+	</mx:FormItem>
+	
+	<mx:FormItem label="Volume">
+		<mx:TextInput id="volume" text="{product.volume}"/>
+	</mx:FormItem>
+	
+	<mx:FormItem label="stockAmount">
+		<mx:TextInput id="stockAmount" text="{product.stockAmount}"/>
+	</mx:FormItem>
+	
+	<mx:FormItem>
+		<mx:Button label="Update" click="update()"/>
+	</mx:FormItem>
+</mx:Form>
+
+</mx:Application>

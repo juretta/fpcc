@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="100" backgroundColor="#D2D2D2" cornerRadius="5" borderStyle="solid" initialize="onInit()">
+    <mx:Script>
+        <![CDATA[
+        
+        	public var mode:String = "warn";
+        
+            private function closeWindow():void {
+                notificationText.text = "";
+                this.visible = false;
+            }
+            
+            private function onInit():void {
+            	if("notice" == mode) {
+            		symbolNotice.visible = true;
+            	}
+            	symbolWarn.visible = !symbolNotice.visible;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Image id="closeButton" click="closeWindow()" width="16" height="16" x="180" y="4"  source="assets/images/cross.png" enabled="true" alpha="1.0"/>
+    <mx:Text id="notificationText" x="10" y="44" text="" width="180" height="46"/>
+    <mx:Image id="symbolWarn" x="4" y="4" source="assets/images/flag.png" scaleContent="false" autoLoad="true" width="32" height="32" visible="false" />
+    <mx:Image id="symbolNotice" x="4" y="4" source="assets/images/network.png" scaleContent="false" autoLoad="true" width="32" height="32" visible="false" />
+</mx:Canvas>

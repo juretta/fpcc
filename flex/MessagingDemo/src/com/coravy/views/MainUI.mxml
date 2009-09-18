@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	     xmlns:views="com.coravy.views.*" 
+	     xmlns:coravy="com.coravy.components.*"
+	     xmlns:mate="http://mate.asfusion.com/" 
+	     height="100%"
+	     >
+	
+	<mx:Script>
+		<![CDATA[
+	    import mx.controls.Alert;
+        import com.coravy.events.*;
+        import mx.messaging.*;
+        import mx.messaging.messages.*;
+        import mx.messaging.events.*;
+		private const LOGIN:uint            = 0;
+		private const INTERNAL:uint         = 1;
+			
+		private const DEMO_VIEW:uint    = 0; 
+		
+		private function handleMessageReceivedEvent(event:NotificationEvent):void {
+		    messageWindow.visible = true;
+		    messageWindow.notificationText.text = event.message;
+		}
+		
+		private function handleSystemMessageReceivedEvent(event:NotificationEvent):void {
+		    messageWindowNotice.visible = true;
+		    messageWindowNotice.notificationText.text = event.message;
+		}
+		
+		]]>
+	</mx:Script>
+
+	<!-- Listeners and Dispatchers ________________________________________________ -->
+
+	<mate:Listener type="{NavigationEvent.LOGIN}" receive="viewStack.selectedIndex = LOGIN" />
+	<mate:Listener type="{NavigationEvent.DEMO_VIEW}" receive="viewStack.selectedIndex = INTERNAL;navViewStack.selectedIndex = DEMO_VIEW" />
+	
+	<mate:Listener type="{NotificationEvent.MESSAGE_RECEIVED}" receive="handleMessageReceivedEvent(event)" />
+	<mate:Listener type="{NotificationEvent.SYSTEM_MESSAGE_RECEIVED}" receive="handleSystemMessageReceivedEvent(event)" />
+	
+	
+	<!--
+	<mate:Listener type="{NavigationEvent.PRODUCT_LIST}" receive="viewStack.selectedIndex = INTERNAL;navViewStack.selectedIndex = PRODUCT_LIST" />
+	<mate:Listener type="{NavigationEvent.RESELLER_LIST}" receive="viewStack.selectedIndex = INTERNAL;navViewStack.selectedIndex = RESELLER_LIST" />
+	-->
+
+	<!-- GUI ______________________________________________________________________ -->
+    <mx:Image source="@Embed('/assets/images/logo.coravy.jira.png')" width="200" height="70" />	
+
+	<!--<mx:HBox width="800" height="100%" styleName="mainBody">-->
+	<mx:Canvas width="800" height="100%">
+        
+		<mx:ViewStack id="viewStack" resizeToContent="true" creationPolicy="all">
+			<mx:HBox width="100%" >
+				<views:Login />	
+			</mx:HBox>
+			
+			<mx:HBox width="100%" horizontalAlign="right">
+				<!-- <views:Navigation width="160" height="200"/> -->
+				<mx:ViewStack id="navViewStack" resizeToContent="true" creationPolicy="all" width="100%">
+								
+					<views:DemoView width="100%"/>
+					
+					<!--
+                    <views:ProductList width="100%" />
+                    
+                    <views:ResellerList width="100%" />
+                    -->
+				</mx:ViewStack>
+			</mx:HBox>
+		</mx:ViewStack>
+	
+		<coravy:NotificationWindow mode="notice" id="messageWindowNotice" x="200" y="300" visible="false" />
+	    <coravy:NotificationWindow mode="warn" id="messageWindow" x="150" y="150" visible="false" />
+	
+	</mx:Canvas>
+	
+</mx:VBox>

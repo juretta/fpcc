@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" 
+	width="100%"
+	title="Messaging Demo"
+	xmlns:coravy="com.coravy.components.*"
+	xmlns:mate="http://mate.asfusion.com/" 
+	initialize="logon();">
+	
+	<mx:Script>
+	    <![CDATA[
+	        import mx.controls.Alert;
+	        import mx.rpc.Fault
+	        import mx.collections.ArrayCollection;
+	        import mx.controls.listClasses.IListItemRenderer;
+			import mx.events.*;
+			import mx.controls.TextInput;
+			import mx.controls.CheckBox;
+            import mx.rpc.events.FaultEvent;
+            import mx.messaging.*;
+            import mx.messaging.messages.*;
+            import mx.messaging.events.*;
+            import mx.controls.Alert;
+            import com.coravy.events.*;
+            import mx.collections.ArrayCollection;
+         
+            private function messageHandler(event:MessageEvent):void {
+	            var ne:NotificationEvent = new NotificationEvent(NotificationEvent.SYSTEM_MESSAGE_RECEIVED);
+	            ne.message = (event.message.body as String);
+	            messageDispatcher.dispatchEvent(ne);
+            }
+            
+            private function acknowledgeHandler(event:MessageAckEvent):void{
+	            trace(event);
+	            trace(event.message);
+            }
+            
+            private function faultHandler(event:MessageFaultEvent):void {
+                Alert.show("Fault: " + event.faultString, 'Alert Box', mx.controls.Alert.OK);
+            }
+            
+            private function logon():void {
+                weatherWarningsConsumer.subscribe();
+                systemMessagesConsumer.subscribe();
+            }
+            
+	        private function systemMessageHandler(event:MessageEvent):void {
+	            trace(event);
+	            trace(event.message);
+	            var ne:NotificationEvent = new NotificationEvent(NotificationEvent.MESSAGE_RECEIVED);
+	            ne.message = (event.message.body as String);
+	            messageDispatcher.dispatchEvent(ne);
+	        }
+	    ]]>
+	</mx:Script>
+
+	
+	<!-- =================== Listener/Dispatcher ================= -->
+	<mate:Dispatcher id="messageDispatcher" />
+
+
+	<mx:Consumer id="systemMessagesConsumer" 
+	    destination="systemMessages" 
+	    message="systemMessageHandler(event)" 
+	    acknowledge="acknowledgeHandler(event);" 
+	    fault="faultHandler(event)"/>
+	    
+	<mx:Consumer id="weatherWarningsConsumer" 
+	    destination="weatherWarnings" 
+	    message="messageHandler(event)"
+	    selector="severity > 3"
+	    acknowledge="acknowledgeHandler(event);" 
+	    fault="faultHandler(event)"/>
+	<!-- ========================== GUI ========================== -->
+	
+	<mx:VBox width="100%">
+        <mx:Image source="@Embed('/assets/images/flashcamp_logo.png')" width="760" height="600" />
+	</mx:VBox>	
+</mx:Panel>

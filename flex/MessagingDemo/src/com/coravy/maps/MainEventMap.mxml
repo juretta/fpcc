@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/">
+	
+	<mx:Script>
+		<![CDATA[
+		    import mx.resources.ResourceManager;
+			import mx.events.*;
+			import com.coravy.events.*;
+			import com.coravy.business.*;
+		]]>
+	</mx:Script>
+	
+	<!-- ========================================= Login ========================================= -->
+	
+	<!-- Login.LOGIN_SUCCESSFUL ___________________________________________________________ -->
+	
+	<EventHandlers type="{LoginEvent.LOGIN_SUCCESSFUL}">
+        <EventAnnouncer generator="{NavigationEvent}" type="{NavigationEvent.DEMO_VIEW}" />
+	</EventHandlers>
+	
+	<!-- LoginEvent.LOGIN ________________________________________________________________________ -->
+	
+	<EventHandlers type="{LoginEvent.LOGIN}">
+		<MethodInvoker generator="{AuthorizationManager}" method="login" arguments="{[event.username, event.password]}" />
+		<ResponseAnnouncer type="loginResultResponse">
+			<Properties loginResult="{lastReturn}"/>
+		</ResponseAnnouncer>
+	</EventHandlers>
+	
+	<!-- =======================================  // Login =========================================== -->
+
+		
+</EventMap>

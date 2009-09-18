@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+
+	<!-- Styles ______________________________________________________ -->
+	
+	<mx:Style source="/assets/styles/main.css" />
+
+    	<mx:Script>
+	    <![CDATA[
+	        import mx.controls.Alert;
+	        import mx.rpc.Fault
+	        import mx.collections.ArrayCollection;
+			import mx.messaging.*; 
+            import mx.messaging.messages.*; 
+            import mx.messaging.events.*; 
+			
+			[Bindable]
+			private var severityDataProvider:ArrayCollection = new ArrayCollection([
+				{level: 2, name: "Notice"}, 
+				{level: 3, name: "Warning"}, 
+				{level: 5, name: "Severe"}]);
+
+         
+            private function send():void {
+            	trace(severity.selectedItem);
+				var message:AsyncMessage = new AsyncMessage(); 
+                message.headers = new Array(); 
+                message.headers["severity"] = severity.selectedItem.level; 
+                message.body = messageInput.text; 
+                producer.send(message); 
+                
+                // clear the text field
+                messageInput.text = "";//severity.selectedItem.level.toString();
+            }
+	    ]]>
+	</mx:Script>
+
+    <mx:Producer id="producer" 
+        destination="weatherWarnings"/> 
+
+	<mx:Image source="@Embed('/assets/images/flashcamp_logo.png')" width="760" height="600"  x="245" y="25"/>
+
+	<mx:Form x="220" y="419" backgroundColor="#FFFFFF" cornerRadius="5">
+		<mx:FormItem label="Message">
+			<mx:TextInput id="messageInput" width="402"/>
+		</mx:FormItem>
+		<mx:FormItem label="Severity">
+			<mx:ComboBox id="severity" dataProvider="{severityDataProvider}" labelField="name"></mx:ComboBox>
+		</mx:FormItem>
+
+		<mx:FormItem label="Label">
+			<mx:Button label="Send" click="send();"/>
+		</mx:FormItem>
+	</mx:Form>
+
+	<mx:Label x="306" y="391" text="The demo app only consumes messages with Severity &gt; Warning"/>
+	
+</mx:Application>
