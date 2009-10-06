@@ -16,12 +16,12 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* StompMessagingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* StompMessagingDemoViewController.m */; };
 		F85FEF1B1058B59200B01459 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F85FEF181058B59200B01459 /* AsyncSocket.m */; };
-		F85FEF1C1058B59200B01459 /* StompService.m in Sources */ = {isa = PBXBuildFile; fileRef = F85FEF1A1058B59200B01459 /* StompService.m */; };
 		F85FEF201058B5DE00B01459 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F85FEF1F1058B5DE00B01459 /* CFNetwork.framework */; };
 		F85FEF551058BA9700B01459 /* Messaging-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = F85FEF541058BA9700B01459 /* Messaging-Background.png */; };
 		F85FEFBA1058C00B00B01459 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85FEFB91058C00B00B01459 /* Icon.png */; };
 		F85FEFC21058C06300B01459 /* network-error.png in Resources */ = {isa = PBXBuildFile; fileRef = F85FEFC01058C06300B01459 /* network-error.png */; };
 		F85FEFC31058C06300B01459 /* network-idle.png in Resources */ = {isa = PBXBuildFile; fileRef = F85FEFC11058C06300B01459 /* network-idle.png */; };
+		F8E839F0107AEE8F003920D8 /* CRVStompClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E839EF107AEE8F003920D8 /* CRVStompClient.m */; };
 		F8FF097F105CC444003A597C /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FF097E105CC444003A597C /* view-refresh.png */; };
 /* End PBXBuildFile section */
 
@@ -41,14 +41,14 @@
 		8D1107310486CEB800E47090 /* StompMessagingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "StompMessagingDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		F85FEF171058B59200B01459 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		F85FEF181058B59200B01459 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
-		F85FEF191058B59200B01459 /* StompService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StompService.h; sourceTree = "<group>"; };
-		F85FEF1A1058B59200B01459 /* StompService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StompService.m; sourceTree = "<group>"; };
 		F85FEF1F1058B5DE00B01459 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		F85FEF241058B74000B01459 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		F85FEF541058BA9700B01459 /* Messaging-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Messaging-Background.png"; sourceTree = "<group>"; };
 		F85FEFB91058C00B00B01459 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		F85FEFC01058C06300B01459 /* network-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "network-error.png"; sourceTree = "<group>"; };
 		F85FEFC11058C06300B01459 /* network-idle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "network-idle.png"; sourceTree = "<group>"; };
+		F8E839EE107AEE8F003920D8 /* CRVStompClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRVStompClient.h; sourceTree = "<group>"; };
+		F8E839EF107AEE8F003920D8 /* CRVStompClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRVStompClient.m; sourceTree = "<group>"; };
 		F8FF097E105CC444003A597C /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "view-refresh.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,10 +142,10 @@
 		F85FEF161058B59200B01459 /* Stomp */ = {
 			isa = PBXGroup;
 			children = (
+				F8E839EE107AEE8F003920D8 /* CRVStompClient.h */,
+				F8E839EF107AEE8F003920D8 /* CRVStompClient.m */,
 				F85FEF171058B59200B01459 /* AsyncSocket.h */,
 				F85FEF181058B59200B01459 /* AsyncSocket.m */,
-				F85FEF191058B59200B01459 /* StompService.h */,
-				F85FEF1A1058B59200B01459 /* StompService.m */,
 			);
 			name = Stomp;
 			sourceTree = "<group>";
@@ -225,7 +225,7 @@
 				1D3623260D0F684500981E51 /* StompMessagingDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* StompMessagingDemoViewController.m in Sources */,
 				F85FEF1B1058B59200B01459 /* AsyncSocket.m in Sources */,
-				F85FEF1C1058B59200B01459 /* StompService.m in Sources */,
+				F8E839F0107AEE8F003920D8 /* CRVStompClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

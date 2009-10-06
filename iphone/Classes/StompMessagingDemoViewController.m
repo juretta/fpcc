@@ -6,7 +6,8 @@
 //  Copyright coravy 2009. All rights reserved.
 //
 
-#import "StompService.h"
+
+#import "CRVStompClient.h"
 #import "StompMessagingDemoViewController.h"
 
 @interface StompMessagingDemoViewController(PrivateMethods)
@@ -89,13 +90,13 @@
 #pragma mark -
 #pragma mark Action methods
 -(IBAction) sendMessage {
-	[[self service] sendBody:[[self inputField] text] toDestination:kMQTopicName];
+	[[self service] sendMessage:[[self inputField] text] toDestination:kMQTopicName];
 	[[self inputField] resignFirstResponder];
 }
 
 // for the lazy demo without typing
 -(IBAction) sendDefaultMessage {
-	[[self service] sendBody:kDefaultMessageText toDestination:kMQTopicName];		
+	[[self service] sendMessage:kDefaultMessageText toDestination:kMQTopicName];		
 }
 
 -(IBAction) refreshConnection {
@@ -104,7 +105,7 @@
 
 #pragma mark -
 #pragma mark StompServiceDelegate
-- (void)stompServiceDidConnect:(StompService *)stompService {
+- (void)stompClientDidConnect:(CRVStompClient *)stompService {
 	NSLog(@"stompServiceDidConnect");
 	[[self statusImage] setImage:[UIImage imageNamed:@"network-idle.png"]];
 	
@@ -117,7 +118,7 @@
 	[[NSUserDefaults standardUserDefaults] setObject:[[self addressField] text] forKey:kUserDefaultsHostKey];
 }
 
-- (void)stompService:(StompService *)stompService gotMessage:(NSString *)body withHeader:(NSDictionary *)messageHeader {
+- (void)stompClient:(CRVStompClient *)stompService messageReceived:(NSString *)body withHeader:(NSDictionary *)messageHeader {
 	NSLog(@"gotMessage body: %@, header: %@", body, messageHeader);
 	
 	[[self messages] setText:body];
@@ -128,7 +129,7 @@
 	//[stompService ack:body];
 }
 
-- (void)stompServiceDidDisconnect:(StompService *)stompService {
+- (void)stompClientDidDisconnect:(CRVStompClient *)stompService {
 	NSLog(@"stompServiceDidDisconnect");
 	
 	[[self sendBtn] setHidden:YES];
@@ -154,7 +155,8 @@
 #pragma mark -
 #pragma mark PrivateMethods
 -(void) connectToMQ:(NSString *) host {
-	StompService *s = [[StompService alloc] initWithHost:host 
+	NSLog(@"About to connect to MQ...");
+	CRVStompClient *s = [[CRVStompClient alloc] initWithHost:host 
 													port:kMQPort 
 												   login:kMQUsername 
 												passcode:kMQPassword 
@@ -164,11 +166,11 @@
 	[s release];
 	
 	NSDictionary *headers = [NSDictionary dictionaryWithObjectsAndKeys: @"client", @"ack", @"true", @"activemq.dispatchAsync", @"1", @"activemq.prefetchSize", nil];
-	[service subscribeToDestination:kMQTopicName withHeader: headers];	
+	[s subscribeToDestination:kMQTopicName withHeader: headers];	
 }
 
 - (void)dealloc {
-	[service unsubscribeToDestination:kMQTopicName];
+	[service unsubscribeFromDestination:kMQTopicName];
 	[service release];
 	[refreshConnectionBtn release];
 	

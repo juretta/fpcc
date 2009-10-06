@@ -8,8 +8,8 @@
  */
 
 
-
-#define kMQHost					@"192.168.0.15"
+//@"192.168.0.15"
+#define kMQHost					@"127.0.0.1"
 #define kMQPort					61613
 #define kMQUsername				@"system"
 #define kMQPassword				@"qdajsqenqlwjkqnqk234234b2kl"

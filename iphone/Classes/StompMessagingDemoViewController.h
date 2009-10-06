@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class StompService;
-@protocol StompServiceDelegate;
+@class CRVStompClient;
+@protocol CRVStompClientDelegate;
 
 
-@interface StompMessagingDemoViewController : UIViewController<StompServiceDelegate,UITextFieldDelegate> {
+@interface StompMessagingDemoViewController : UIViewController<CRVStompClientDelegate,UITextFieldDelegate> {
 	@private
-	StompService *service;
+	CRVStompClient *service;
 	UITextView *messages;
 	UITextField *inputField;
 	UITextField *addressField;	
@@ -26,7 +26,7 @@
 	UIButton *sendDefaultBtn;
 }
 
-@property(nonatomic, retain) StompService *service;
+@property(nonatomic, retain) CRVStompClient *service;
 @property(nonatomic, retain) IBOutlet UITextView *messages;
 @property(nonatomic, retain) IBOutlet UITextField *inputField;
 @property(nonatomic, retain) IBOutlet UITextField *addressField;
