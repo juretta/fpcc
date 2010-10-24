@@ -8,8 +8,8 @@
 // 
 //  Requires the AsyncSocket library
 //  See: http://code.google.com/p/cocoaasyncsocket/
-//
-//  This class is in the public domain.
+//  
+//  See: LICENSE
 //	Stefan Saasen <stefan@coravy.com>
 //  Based on StompService.{h,m} by Scott Raymond <sco@scottraymond.net>.
 
@@ -44,6 +44,7 @@ typedef enum {
 	NSString *passcode;
 	NSString *sessionId;
 	BOOL doAutoconnect;
+	BOOL anonymous;
 }
 
 @property (nonatomic, assign) id<CRVStompClientDelegate> delegate;
@@ -58,6 +59,14 @@ typedef enum {
 			  port:(NSUInteger)thePort 
 			 login:(NSString *)theLogin
 		  passcode:(NSString *)thePasscode 
+		  delegate:(id<CRVStompClientDelegate>)theDelegate
+	   autoconnect:(BOOL) autoconnect;
+
+/**
+ * Connects as an anonymous user. Suppresses "login" and "passcode" headers.
+ */
+- (id)initWithHost:(NSString *)theHost 
+			  port:(NSUInteger)thePort 
 		  delegate:(id<CRVStompClientDelegate>)theDelegate
 	   autoconnect:(BOOL) autoconnect;
 

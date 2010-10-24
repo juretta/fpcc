@@ -9,7 +9,7 @@
 //  Requires the AsyncSocket library
 //  See: http://code.google.com/p/cocoaasyncsocket/
 //
-//  This class is in the public domain.
+//  See: LICENSE
 //	Stefan Saasen <stefan@coravy.com>
 //  Based on StompService.{h,m} by Scott Raymond <sco@scottraymond.net>.
 #import "CRVStompClient.h"
@@ -71,6 +71,16 @@
 
 - (id)initWithHost:(NSString *)theHost 
 			  port:(NSUInteger)thePort 
+		  delegate:(id<CRVStompClientDelegate>)theDelegate
+	   autoconnect:(BOOL) autoconnect {
+	if(self = [self initWithHost:theHost port:thePort login:nil passcode:nil delegate:theDelegate autoconnect: NO]) {
+		anonymous = YES;
+	}
+	return self;
+}
+
+- (id)initWithHost:(NSString *)theHost 
+			  port:(NSUInteger)thePort 
 			 login:(NSString *)theLogin 
 		  passcode:(NSString *)thePasscode 
 		  delegate:(id<CRVStompClientDelegate>)theDelegate {
@@ -85,6 +95,7 @@
 	   autoconnect:(BOOL) autoconnect {
 	if(self = [super init]) {
 		
+		anonymous = NO;
 		doAutoconnect = autoconnect;
 		
 		AsyncSocket *theSocket = [[AsyncSocket alloc] initWithDelegate:self];
@@ -108,8 +119,12 @@
 #pragma mark -
 #pragma mark Public methods
 - (void)connect {
-	NSDictionary *headers = [NSDictionary dictionaryWithObjectsAndKeys: [self login], @"login", [self passcode], @"passcode", nil];
-	[self sendFrame:kCommandConnect withHeader:headers andBody: nil];
+	if(anonymous) {
+		[self sendFrame:kCommandConnect];
+	} else {
+		NSDictionary *headers = [NSDictionary dictionaryWithObjectsAndKeys: [self login], @"login", [self passcode], @"passcode", nil];
+		[self sendFrame:kCommandConnect withHeader:headers andBody: nil];
+	}
 	[self readFrame];
 }
 
@@ -239,7 +254,7 @@
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData*)data withTag:(long)tag {
 	NSData *strData = [data subdataWithRange:NSMakeRange(0, [data length])];
 	NSString *msg = [[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding];
-    NSMutableArray *contents = (NSMutableArray *)[msg componentsSeparatedByString:@"\n"];
+    NSMutableArray *contents = (NSMutableArray *)[[msg componentsSeparatedByString:@"\n"] mutableCopy];
 	if([[contents objectAtIndex:0] isEqual:@""]) {
 		[contents removeObjectAtIndex:0];
 	}
@@ -267,6 +282,7 @@
 	[msg release];
 	[self receiveFrame:command headers:headers body:body];
 	[self readFrame];
+	[contents release];
 }
 
 - (void)onSocket:(AsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
